@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'olio71mrtw_j--8%fqo8#amu)y6nf=7f^oc-xow38g0a9xl!ql'
+APPEND_SLASH = False
 
 ALLOWED_HOSTS = []
 
@@ -35,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Django Rest Framework.
+    'rest_framework',
     # Zuhura APPS
     'api',
 ]
