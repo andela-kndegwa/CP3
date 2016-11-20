@@ -1,5 +1,7 @@
 from rest_framework import permissions
 
+from api.models import BucketList
+
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
@@ -27,3 +29,18 @@ class IsOwnerOrReadOnlyItem(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.bucketlist.owner == request.user
+
+
+class IsParentId(permissions.BasePermission):
+    """
+    Permission does not permit access to bucketlist item via
+    bucketlists IDs that aren't owned by the current user
+    """
+
+    def has_permission(self, request, view):
+        try:
+            owner = BucketList.objects.get(
+                pk=view.kwargs['bucketlist_pk']).owner
+            return request.user == owner
+        except BucketList.DoesNotExist:
+            return True

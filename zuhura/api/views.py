@@ -8,7 +8,7 @@ from rest_framework import permissions
 
 from api.serializers import BucketListSerializer, BucketListItemSerializer
 from api.models import BucketList, BucketListItem
-from api.permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyItem
+from api.permissions import IsOwnerOrReadOnly, IsParentId
 # Create your views here.
 
 
@@ -33,18 +33,16 @@ class BucketListViewSet(viewsets.ModelViewSet):
 class BucketListItemViewSet(viewsets.ModelViewSet):
     queryset = BucketListItem.objects.all()
     serializer_class = BucketListItemSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnlyItem)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsParentId)
 
     def perform_create(self, serializer):
-        print(serializer)
         item_bucketlist_id = self.kwargs.get("bucketlist_pk")
         bucketlist = BucketList.objects.get(id=item_bucketlist_id)
         serializer.save(bucketlist=bucketlist)
 
     def get_queryset(self):
         """Limit items returned to those of a particular bucketlist"""
-        bucketlist_id = self.kwargs.get('bucketlist')
+        bucketlist_id = self.kwargs.get('bucketlist_pk')
         return BucketListItem.objects.filter(
             bucketlist=bucketlist_id,
             bucketlist__owner=self.request.user)

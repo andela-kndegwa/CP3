@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+
 from rest_framework import serializers
 from api.models import BucketList, BucketListItem
 from django.contrib.auth.models import User
@@ -35,6 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class BucketListItemSerializer(serializers.ModelSerializer):
     bucketlist = serializers.PrimaryKeyRelatedField(read_only=True)
+    # set a unique on the model field
+    # set an error on the serializer and catch the particular error
 
     def create(self, validated_data):
         if not validated_data.get("name"):
@@ -48,7 +52,6 @@ class BucketListItemSerializer(serializers.ModelSerializer):
 
 
 class BucketListSerializer(serializers.ModelSerializer):
-
     owner = serializers.ReadOnlyField(source='owner.username')
     url = serializers.HyperlinkedIdentityField(view_name='bucketlist-detail',
                                                format='html')
@@ -69,10 +72,14 @@ class BucketListSerializer(serializers.ModelSerializer):
                   "items", "created_on", "modified_on", "url")
 
     def create(self, validated_data):
-        if not validated_data.get("name"):
+        try:
+            if not validated_data.get("name"):
+                raise serializers.ValidationError(
+                    "Bucket list name cannot be empty")
+            return super(BucketListSerializer, self).create(validated_data)
+        except IntegrityError:
             raise serializers.ValidationError(
-                "Bucket list name cannot be empty")
-        return super(BucketListSerializer, self).create(validated_data)
+                'Duplicate Value exist.')
 
     def update(self, instance, validated_data):
         instance.date_modified = now()

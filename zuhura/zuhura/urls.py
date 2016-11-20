@@ -19,7 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # API Views
-    url(r'^api/v1.1/', include('api.urls')),
+    url(r'^api/v1.0/', include('api.urls')),
 ]
 
 

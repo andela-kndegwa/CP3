@@ -19,9 +19,15 @@ class BaseModel(models.Model):
 class BucketList(BaseModel):
     owner = models.ForeignKey('auth.User', related_name='bucketlists')
 
+    class Meta:
+        unique_together = ('name', 'owner')
+
 
 class BucketListItem(BaseModel):
     is_done = models.BooleanField(default=False)
     bucketlist = models.ForeignKey(
         'BucketList',
         related_name='items', on_delete=models.CASCADE,)
+
+    class Meta:
+        unique_together = ('name', 'bucketlist')
