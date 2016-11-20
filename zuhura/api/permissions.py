@@ -15,3 +15,15 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         # Write permissions are only allowed to the owner of the bucket list.
         # or bucket list item resource
         return obj.owner == request.user
+
+
+class IsOwnerOrReadOnlyItem(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of a item to edit or
+    delete it. Read only permission for non-owners of the item.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.bucketlist.owner == request.user
