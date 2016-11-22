@@ -1,21 +1,25 @@
 from django.shortcuts import render
 
+
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
 from rest_framework import permissions
 
-from api.serializers import BucketListSerializer, BucketListItemSerializer
+from api.serializers import BucketListSerializer, BucketListItemSerializer, UserSerializer
 from api.models import BucketList, BucketListItem
 from api.permissions import IsOwnerOrReadOnly, IsParentId
+
+from django.contrib.auth.models import User
+
 # Create your views here.
 
 
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'buckelists': reverse('buckelists', request=request, format=format),
+        'bucketlists': reverse('bucketlists', request=request, format=format),
         'items': reverse('items', request=request, format=format)
     })
 
@@ -23,7 +27,7 @@ def api_root(request, format=None):
 class BucketListViewSet(viewsets.ModelViewSet):
     queryset = BucketList.objects.all()
     serializer_class = BucketListSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+    permission_classes = (permissions.IsAuthenticated,
                           IsOwnerOrReadOnly)
 
     def perform_create(self, serializer):
@@ -46,3 +50,9 @@ class BucketListItemViewSet(viewsets.ModelViewSet):
         return BucketListItem.objects.filter(
             bucketlist=bucketlist_id,
             bucketlist__owner=self.request.user)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny,)

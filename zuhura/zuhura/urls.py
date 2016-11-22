@@ -16,10 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # API Views
     url(r'^api/v1.0/', include('api.urls')),
+    url(r'^auth/login/', include('api.urls')),
 ]
-
-

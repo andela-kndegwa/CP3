@@ -8,9 +8,10 @@ from django.utils.timezone import now
 
 
 class UserSerializer(serializers.ModelSerializer):
-    bucketlists = serializers.StringRelatedField(
-        read_only=True,
-        many=True)
+    username = serializers.EmailField(
+        max_length=None,
+        min_length=None,
+        allow_blank=False),
 
     email = serializers.EmailField(
         max_length=None,
@@ -32,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "username", "email", "password", "bucketlists")
+        fields = ("id", "username", "email", "password")
 
 
 class BucketListItemSerializer(serializers.ModelSerializer):

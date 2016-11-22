@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(
@@ -22,7 +22,8 @@ BASE_DIR = os.path.dirname(
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'olio71mrtw_j--8%fqo8#amu)y6nf=7f^oc-xow38g0a9xl!ql'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+APPEND_SLASH = False
 
 
 # Application definition
@@ -40,6 +41,23 @@ INSTALLED_APPS = [
     'api',
 ]
 
+# JSONWebTokenAuthentication to Django
+# REST framework's DEFAULT_AUTHENTICATION_CLASSES
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}
+JWT_AUTH = {
+    # set expiration time to an hour i.e 3600 Secs
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
