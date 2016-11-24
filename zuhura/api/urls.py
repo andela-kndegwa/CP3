@@ -26,7 +26,6 @@ item_router.register(r'items', BucketListItemViewSet)
 urlpatterns = format_suffix_patterns([
     url(r'^$', api_root),
     url(r'^auth/register', user_register),
-    # url(r'^auth/login', user_login),
     url(r'^auth/login', obtain_jwt_token),
     url(r'^', include(router.urls)),
     url(r'^', include(item_router.urls)),

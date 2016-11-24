@@ -80,9 +80,10 @@ class BucketListSerializer(serializers.ModelSerializer):
             return super(BucketListSerializer, self).create(validated_data)
         except IntegrityError:
             raise serializers.ValidationError(
-                'Duplicate Value exist.')
+                'Duplicate Value exists.')
 
     def update(self, instance, validated_data):
+        print(validated_data)
         instance.date_modified = now()
         return super(BucketListSerializer, self).update(instance,
                                                         validated_data)
