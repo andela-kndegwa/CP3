@@ -7,7 +7,7 @@ from django.db import models
 
 class BaseModel(models.Model):
     name = models.CharField(blank=False, max_length=200)
-    description = models.CharField(blank=False, max_length=600)
+    description = models.CharField(max_length=600)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
 

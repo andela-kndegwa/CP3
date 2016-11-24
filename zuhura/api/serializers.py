@@ -38,6 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class BucketListItemSerializer(serializers.ModelSerializer):
     bucketlist = serializers.PrimaryKeyRelatedField(read_only=True)
+    description = serializers.CharField(required=False)
     # set a unique on the model field
     # set an error on the serializer and catch the particular error
 
@@ -48,7 +49,7 @@ class BucketListItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BucketListItem
-        fields = ('id', 'name', 'is_done', 'created_on',
+        fields = ('id', 'name', 'is_done', 'created_on', 'description'
                   'modified_on', 'bucketlist')
 
 
@@ -56,6 +57,7 @@ class BucketListSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     url = serializers.HyperlinkedIdentityField(view_name='bucketlist-detail',
                                                format='html')
+    description = serializers.CharField(required=False)
     items = BucketListItemSerializer(many=True, read_only=True)
 
     created_on = serializers.DateTimeField(
@@ -83,7 +85,6 @@ class BucketListSerializer(serializers.ModelSerializer):
                 'Duplicate Value exists.')
 
     def update(self, instance, validated_data):
-        print(validated_data)
         instance.date_modified = now()
         return super(BucketListSerializer, self).update(instance,
                                                         validated_data)

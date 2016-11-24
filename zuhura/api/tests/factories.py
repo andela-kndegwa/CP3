@@ -21,6 +21,7 @@ class BucketListFactory(Factory):
         model = BucketList
 
     name = 'Things to do 2017'
+    description = 'Stay Foolish'
     created_on = datetime.now()
     modified_on = datetime.now()
     owner = SubFactory(UserModelFactory)
@@ -31,6 +32,7 @@ class BucketListItemFactory(Factory):
         model = BucketListItem
 
     bucketlist = SubFactory(BucketListFactory)
+    description = 'Stay Frosty'
     name = 'Travel to Canada'
     is_done = False
     created_on = datetime.now()
