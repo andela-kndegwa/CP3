@@ -20,6 +20,11 @@ def make_put_request(client, url, data, format='json'):
     return response
 
 
+def make_delete_request(client, url):
+    response = client.delete(url)
+    return response
+
+
 class BaseEndPoint(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -56,4 +61,14 @@ class BaseEndPoint(APITestCase):
             'description': self.bucketlist.description
         }
         self.bucket_response = make_post_request(client=self.client,
-                                                 url=self.bucketlists_url, data=data)
+                                                 url=self.bucketlists_url,
+                                                 data=data)
+
+        self.item_data = {
+            "name": "Bucket List Item Sample one",
+        }
+        self.item_put_response = make_post_request(
+            client=self.client, url=self.bucketlists_url + '1/items/',
+            data=self.item_data)
+
+

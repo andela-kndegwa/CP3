@@ -8,7 +8,7 @@ from django.utils.timezone import now
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.EmailField(
+    username = serializers.CharField(
         max_length=None,
         min_length=None,
         allow_blank=False),
@@ -38,7 +38,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 class BucketListItemSerializer(serializers.ModelSerializer):
     bucketlist = serializers.PrimaryKeyRelatedField(read_only=True)
-    description = serializers.CharField(required=False)
+    is_done = serializers.BooleanField(required=False)
+    name = serializers.CharField(required=False)
+
     # set a unique on the model field
     # set an error on the serializer and catch the particular error
 
@@ -47,9 +49,18 @@ class BucketListItemSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Item name cannot be empty")
         return super(BucketListItemSerializer, self).create(validated_data)
 
+    def update(self, instance, validated_data):
+        instance.date_modified = now()
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description',
+                                                  instance.description)
+        instance.is_done = validated_data.get('is_done', instance.is_done)
+        return super(BucketListItemSerializer, self).update(instance,
+                                                        validated_data)
+
     class Meta:
         model = BucketListItem
-        fields = ('id', 'name', 'is_done', 'created_on', 'description'
+        fields = ('id', 'name', 'is_done', 'created_on',
                   'modified_on', 'bucketlist')
 
 
