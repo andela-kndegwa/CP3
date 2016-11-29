@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class FrontPage {
+export class CP3Page {
   navigateTo() {
     return browser.get('/');
   }

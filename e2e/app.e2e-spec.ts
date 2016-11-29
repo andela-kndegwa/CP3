@@ -1,10 +1,10 @@
-import { FrontPage } from './app.po';
+import { CP3Page } from './app.po';
 
-describe('front App', function() {
-  let page: FrontPage;
+describe('cp3 App', function() {
+  let page: CP3Page;
 
   beforeEach(() => {
-    page = new FrontPage();
+    page = new CP3Page();
   });
 
   it('should display message saying app works', () => {
