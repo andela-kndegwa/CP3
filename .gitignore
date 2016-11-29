@@ -17,3 +17,5 @@ ENV/
 front
 
 .DS_Store
+
+node_modules

@@ -8,6 +8,12 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 
+# safelist
+branches:
+  only:
+  - master
+  - ch-write-tests
+  
 script:
   - cd zuhura
   - python manage.py makemigrations

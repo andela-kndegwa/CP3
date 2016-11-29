@@ -1,1 +1,1 @@
-web: gunicorn zuhura.zuhura.wsgi; --log-file -
+web: cd zuhura; gunicorn zuhura.wsgi;
