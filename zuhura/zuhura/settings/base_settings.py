@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'rest_framework',
     # Zuhura APPS
     'api',
+    # CORS config.
+    'corsheaders',
 ]
 
 # JSONWebTokenAuthentication to Django
@@ -66,9 +68,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'zuhura.urls'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
@@ -124,4 +130,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATIC_ROOT = os.path.join (BASE_DIR, 'staticfiles')
+
 STATIC_URL = '/static/'
+# os.path.join (BASE_DIR, '')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+

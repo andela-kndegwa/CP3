@@ -45,9 +45,14 @@ class BucketListItemSerializer(serializers.ModelSerializer):
     # set an error on the serializer and catch the particular error
 
     def create(self, validated_data):
-        if not validated_data.get("name"):
-            raise serializers.ValidationError("Item name cannot be empty")
-        return super(BucketListItemSerializer, self).create(validated_data)
+        try:
+            if not validated_data.get("name"):
+                raise serializers.ValidationError(
+                    "Bucket list name cannot be empty")
+            return super(BucketListItemSerializer, self).create(validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                'That bucket list item name already exists.')
 
     def update(self, instance, validated_data):
         instance.date_modified = now()
@@ -93,7 +98,7 @@ class BucketListSerializer(serializers.ModelSerializer):
             return super(BucketListSerializer, self).create(validated_data)
         except IntegrityError:
             raise serializers.ValidationError(
-                'Duplicate Value exists.')
+                'That bucket list name already exists.')
 
     def update(self, instance, validated_data):
         instance.date_modified = now()
