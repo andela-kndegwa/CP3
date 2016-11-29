@@ -11,5 +11,5 @@ Faker==0.7.3
 ipaddress==1.0.17 
 python-dateutil==2.6.0
 coverage==4.2
-
+gunicorn==19.6.0
 
