@@ -60,8 +60,12 @@ class BucketListItemSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description',
                                                   instance.description)
         instance.is_done = validated_data.get('is_done', instance.is_done)
-        return super(BucketListItemSerializer, self).update(instance,
-                                                        validated_data)
+        try:
+            return super(BucketListItemSerializer, self).update(instance,
+                                                                validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                'That bucket list item name already exists.')
 
     class Meta:
         model = BucketListItem
@@ -102,5 +106,9 @@ class BucketListSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.date_modified = now()
-        return super(BucketListSerializer, self).update(instance,
-                                                        validated_data)
+        try:
+            return super(BucketListSerializer, self).update(instance,
+                                                            validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                'That bucket list name already exists.')
