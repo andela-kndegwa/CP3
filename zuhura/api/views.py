@@ -14,15 +14,16 @@ from api.permissions import IsOwner, IsParentId
 
 from django.contrib.auth.models import User
 
+
 # Create your views here.
 
 
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'bucketlists': reverse('bucketlists', request=request, format=format),
-        'items': reverse('items', request=request, format=format)
-    })
+# @api_view(['GET'])
+# def api_root(request, format=None):
+#     return Response({
+#         # 'bucketlists': reverse('bucketlists', request=request, format=format),
+#         'items': reverse('items', request=request, format=format)
+#     })
 
 
 class BucketListViewSet(viewsets.ModelViewSet):
@@ -35,7 +36,7 @@ class BucketListViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def list(self, request):
-        queryset = request.user.bucketlists.all()
+        queryset = request.user.bucketlists.all().order_by('-modified_on')
         serializer = BucketListSerializer(queryset,
                                           many=True,
                                           context={'request': Request(request)})

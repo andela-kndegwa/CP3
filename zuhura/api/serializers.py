@@ -40,6 +40,7 @@ class BucketListItemSerializer(serializers.ModelSerializer):
     bucketlist = serializers.PrimaryKeyRelatedField(read_only=True)
     is_done = serializers.BooleanField(required=False)
     name = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
 
     # set a unique on the model field
     # set an error on the serializer and catch the particular error
@@ -70,13 +71,14 @@ class BucketListItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = BucketListItem
         fields = ('id', 'name', 'is_done', 'created_on',
-                  'modified_on', 'bucketlist')
+                  'modified_on', 'description', 'bucketlist')
 
 
 class BucketListSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     url = serializers.HyperlinkedIdentityField(view_name='bucketlist-detail',
                                                format='html')
+    name = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     items = BucketListItemSerializer(many=True, read_only=True)
 

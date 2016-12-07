@@ -35,8 +35,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # REST Swagger Config
+    'rest_framework_swagger',
     # Django Rest Framework.
     'rest_framework',
+    'rest_framework_docs',
     # Zuhura APPS
     'api',
     # CORS config.
@@ -58,7 +61,7 @@ REST_FRAMEWORK = {
 }
 JWT_AUTH = {
     # set expiration time to an hour i.e 3600 Secs
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=7200),
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
